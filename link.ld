@@ -38,8 +38,8 @@ SECTIONS {
     .bss (NOLOAD) : {
         __bss_start = .;
         *(.bss .bss.* COMMON)
+        __bss_end = .;
     }
-    __bss_size = SIZEOF(.bss);
     .noinit (NOLOAD) : {
         *(.noinit .noinit.*)
         __heap_start = .;

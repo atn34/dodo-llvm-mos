@@ -9,7 +9,7 @@ _start:                                 ; @_start
 	ldx #$FF
 	txs
 	cli
-	jsr _zero_bss
+	jsr zero_bss
 	jsr main
 .L1:
 	jmp .L1
