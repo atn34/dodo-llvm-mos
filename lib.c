@@ -25,12 +25,18 @@ char *itoa(int value, int base) {
 
 extern unsigned char __heap_start[];
 unsigned char *first_unallocated = __heap_start;
+unsigned int alloc_count = 0;
 
 #pragma clang diagnostic ignored "-Wincompatible-library-redeclaration"
 
 void *malloc(unsigned __size) {
+  ++alloc_count;
   void *result = first_unallocated;
   first_unallocated += __size;
   return result;
 }
-void free(void *p) {}
+void free(void *p) {
+  if (!--alloc_count) {
+    first_unallocated = __heap_start;
+  }
+}
