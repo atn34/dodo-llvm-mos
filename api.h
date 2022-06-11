@@ -135,7 +135,7 @@ void SAVE_PERSISTENT(byte* buffer);
 
 void srand(unsigned int x);
 int rand();
-char *itoa(int value, char *str, int base);
+char *itoa(int value, int base);
 
 #define api_init()
 

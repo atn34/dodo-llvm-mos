@@ -7,8 +7,11 @@ int rand() {
   return _seed;
 }
 
-char *itoa(int value, char *str, int base) {
-  str += 9;
+#define BUFFER_SIZE 32
+static char _buffer[BUFFER_SIZE];
+
+char *itoa(int value, int base) {
+  char *str = _buffer + BUFFER_SIZE - 1;
   *str-- = 0;
   while (1) {
     *str = '0' + value % base;

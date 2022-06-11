@@ -41,8 +41,6 @@ static const byte MUSIC[] = { E, 8, B, 4, C, 4, D, 8, C, 4, B, 4,
                               GS2, 16, 0, 16,
                               0, 0 };
 
-static byte _buffer[10];
-
 // TODO
 // be able to swap lines around as a whole
 
@@ -368,13 +366,13 @@ tetris_level(struct tetris *t) {
 void 
 tetris_draw_score(struct tetris *t) {
     SET_CURSOR(1, 0);
-    DRAW_STRING(itoa(t->score, (char*)_buffer, 10));
+    DRAW_STRING(itoa(t->score, 10));
     
     SET_CURSOR(4, 0);
-    DRAW_STRING(itoa(t->lines, (char*)_buffer, 10));
+    DRAW_STRING(itoa(t->lines, 10));
     
     SET_CURSOR(1, 12);
-    DRAW_STRING(itoa(t->level, (char*)_buffer, 10));
+    DRAW_STRING(itoa(t->level, 10));
 }
 
 void center(byte row, char *text) {
@@ -507,7 +505,7 @@ tetris_run(byte w, byte h) {
         }
         
         prompt("Game Over");
-        prompt(itoa(t.score, (char*)_buffer, 10));
+        prompt(itoa(t.score, 10));
     
         tetris_clean(&t);
     }
