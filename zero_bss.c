@@ -1,8 +1,8 @@
 extern unsigned char __bss_start[];
 extern unsigned char __bss_end[];
 
+#include <string.h>
+
 void zero_bss() {
-    for (unsigned char* iter = __bss_start; iter < __bss_end; ++iter) {
-        *iter = 0;
-    }
+    memset(__bss_start, 0, __bss_end - __bss_start);
 }
