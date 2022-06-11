@@ -3,12 +3,16 @@
 	.type	_start,@function
 _start:                                 ; @_start
 ; %bb.0:
-	sei
 	cld
-	clv
+	cli
+	lda #mos16lo(__stack)
+	sta mos8(__rc0)
+	lda #mos16hi(__stack)
+	sta mos8(__rc1)
+	lda #__rc0
+	sta $00
 	ldx #$FF
 	txs
-	cli
 	jsr zero_bss
 	jsr main
 .L1:

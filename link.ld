@@ -6,24 +6,6 @@ MEMORY {
 SECTIONS {
     .text 0x5800 : {
         . = . + 0x100;
-        /* lda #<__stack */
-        BYTE(0xA9)
-        BYTE(__stack % 256)
-        /* sta __rc0 */
-        BYTE(0x85)
-        BYTE(__rc0)
-        /* lda #>__stack */
-        BYTE(0xA9)
-        BYTE(__stack / 256)
-        /* sta __rc0 + 1 */
-        BYTE(0x85)
-        BYTE(__rc0 + 1)
-        /* lda #__rc0 */
-        BYTE(0xA9)
-        BYTE(__rc0)
-        /* sta $00 */
-        BYTE(0x85)
-        BYTE(0x00)
         /* jmp _start */
         BYTE(0x4c)
         SHORT(_start)
