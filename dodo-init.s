@@ -6,7 +6,7 @@ __dodo_init:
 	cli
 	; tell dodo where the software stack pointer is
 	lda #__rc0
-	; Init hardware stack pointer
 	sta $00
+	; Init hardware stack pointer
 	ldx #$FF
 	txs
