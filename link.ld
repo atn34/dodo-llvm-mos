@@ -6,26 +6,16 @@ MEMORY {
 SECTIONS {
     .text 0x5800 : {
         . = . + 0x100;
-        /* jmp _start */
-        BYTE(0x4c)
-        SHORT(_start)
-        *(.text .text.*)
+        INCLUDE text-sections.ld
     } >fram
     .rodata : {
-        *(.rodata .rodata.*)
+        INCLUDE rodata-sections.ld
     } >fram
     .data : {
-        *(.data .data.*)
+        INCLUDE data-sections.ld
     } >fram
-    .bss (NOLOAD) : {
-        __bss_start = .;
-        *(.bss .bss.* COMMON)
-        __bss_end = .;
-    }
-    .noinit (NOLOAD) : {
-        *(.noinit .noinit.*)
-        __heap_start = .;
-    }
+    INCLUDE bss.ld
+    INCLUDE noinit.ld
 }
 
 __rc0 = 0x2a;

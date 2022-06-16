@@ -7,14 +7,17 @@ set -euo pipefail
 for LTO_ARG in -flto -fno-lto ; do
     set -x
     if "$LLVM_MOS_DIR"/bin/clang \
+        $LTO_ARG \
         -L"$LLVM_MOS_DIR"/mos-platform/common/lib/ \
         -Os \
         -Wl,--gc-sections \
         -fdata-sections \
         -ffunction-sections \
-        $LTO_ARG \
         -g \
         -isystem "$LLVM_MOS_DIR"/mos-platform/common/include \
+        -lexit-loop \
+        -linit-stack \
+        -lzero-bss \
         -mcpu=mos65c02 \
         -o fram.bin \
         *.s *.c ; then
