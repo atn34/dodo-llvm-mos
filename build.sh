@@ -9,7 +9,7 @@ for LTO_ARG in -flto -fno-lto ; do
     if "$LLVM_MOS_DIR"/bin/clang \
         $LTO_ARG \
         -L"$LLVM_MOS_DIR"/mos-platform/common/lib/ \
-        -Os \
+        -Oz \
         -Wl,--gc-sections \
         -fdata-sections \
         -ffunction-sections \
