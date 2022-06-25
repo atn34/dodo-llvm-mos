@@ -1,56 +1,37 @@
-LLVM_MOS_DIR?=$(HOME)/llvm-mos/
-OPT ?= -Oz
+LLVM_MOS_DIR?=$(HOME)/llvm-mos
+FLAGS ?= -flto -Oz -g -Wall -Wextra -Werror -mcpu=mos65c02
 
 .PHONY: all
 all: fram.bin
 
 %.cpp.o: %.cpp
 	$(LLVM_MOS_DIR)/bin/clang++ \
+		$(FLAGS) \
 		$^ \
-		$(OPT) \
-		-c \
-		-fdata-sections \
-		-ffunction-sections \
-		-flto \
-		-g \
+		-c -std=c++11 -fdata-sections -ffunction-sections \
 		-isystem $(LLVM_MOS_DIR)/mos-platform/common/include \
-		-std=c++11 \
 	       	-o $@
 
 %.c.o: %.c
 	$(LLVM_MOS_DIR)/bin/clang \
+		$(FLAGS) \
 		$^ \
-		$(OPT) \
-		-c \
-		-fdata-sections \
-		-ffunction-sections \
-		-flto \
-		-g \
+		-c -std=c99 -fdata-sections -ffunction-sections \
 		-isystem $(LLVM_MOS_DIR)/mos-platform/common/include \
-		-std=c99 \
 	       	-o $@
 
 %.s.o: %.s
 	$(LLVM_MOS_DIR)/bin/clang \
+		$(FLAGS) \
 		$^ \
-		-c \
-		-g \
-		-mcpu=mos65c02 \
-		-o $@
+		-c -o $@
 
 fram.bin: $(patsubst %,%.o,$(wildcard *.s)) $(patsubst %,%.o,$(wildcard *.c)) $(patsubst %,%.o,$(wildcard *.cpp))
 	$(LLVM_MOS_DIR)/bin/clang++ \
+		$(FLAGS) \
 		$^ \
 		-L $(LLVM_MOS_DIR)/mos-platform/common/lib \
-		$(OPT) \
-		-Wl,--gc-sections \
-		-flto \
-		-g \
-		-isystem $(LLVM_MOS_DIR)/mos-platform/common/include \
-		-linit-stack \
-		-lzero-bss \
-		-mcpu=mos65c02 \
-		-nostartfiles \
+		-Wl,--gc-sections -linit-stack -lzero-bss -nostartfiles \
 		-o $@
 
 .PHONY: clean
@@ -59,7 +40,7 @@ clean:
 
 .PHONY: disass 
 disass: fram.bin
-	@$(LLVM_MOS_DIR)/bin/llvm-objdump -d fram.bin.elf --print-imm-hex --demangle
+	@$(LLVM_MOS_DIR)/bin/llvm-objdump --source fram.bin.elf --print-imm-hex --demangle
 
 
 .PHONY: symbols
