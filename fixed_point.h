@@ -3,6 +3,7 @@
 template <int kShiftAmount, class IntType>
 struct FixedPoint {
 
+	FixedPoint() : shiftedAmount(0) {}
 	FixedPoint(IntType v) : shiftedAmount(v << kShiftAmount) {}
 
 	FixedPoint<kShiftAmount, IntType> operator+(FixedPoint<kShiftAmount, IntType> rhs) const {
@@ -43,7 +44,6 @@ struct FixedPoint {
 		*this;
 	}
 private:
-	FixedPoint() {}
 	IntType shiftedAmount;
 };
 
