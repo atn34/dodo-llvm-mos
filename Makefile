@@ -1,4 +1,5 @@
-LLVM_MOS_DIR?=
+LLVM_MOS_DIR?=$(HOME)/llvm-mos/
+OPT ?= -Oz
 
 .PHONY: all
 all: fram.bin
@@ -6,7 +7,7 @@ all: fram.bin
 %.cpp.o: %.cpp
 	$(LLVM_MOS_DIR)/bin/clang++ \
 		$^ \
-		-Oz \
+		$(OPT) \
 		-c \
 		-fdata-sections \
 		-ffunction-sections \
@@ -19,7 +20,7 @@ all: fram.bin
 %.c.o: %.c
 	$(LLVM_MOS_DIR)/bin/clang \
 		$^ \
-		-Oz \
+		$(OPT) \
 		-c \
 		-fdata-sections \
 		-ffunction-sections \
@@ -41,7 +42,7 @@ fram.bin: $(patsubst %,%.o,$(wildcard *.s)) $(patsubst %,%.o,$(wildcard *.c)) $(
 	$(LLVM_MOS_DIR)/bin/clang++ \
 		$^ \
 		-L $(LLVM_MOS_DIR)/mos-platform/common/lib \
-		-Oz \
+		$(OPT) \
 		-Wl,--gc-sections \
 		-flto \
 		-g \
@@ -58,12 +59,12 @@ clean:
 
 .PHONY: disass 
 disass: fram.bin
-	$(LLVM_MOS_DIR)/bin/llvm-objdump -d fram.bin.elf --print-imm-hex --demangle
+	@$(LLVM_MOS_DIR)/bin/llvm-objdump -d fram.bin.elf --print-imm-hex --demangle
 
 
 .PHONY: symbols
 symbols: fram.bin
-	$(LLVM_MOS_DIR)/bin/llvm-nm fram.bin.elf --numeric-sort --demangle
+	@$(LLVM_MOS_DIR)/bin/llvm-nm fram.bin.elf --numeric-sort --demangle | egrep '^0000(5[9abcdef]|6|7[01234567])'
 
 .PHONY: free_space
 free_space: fram.bin
