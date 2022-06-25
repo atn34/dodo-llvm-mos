@@ -1,7 +1,7 @@
+LLVM_MOS_DIR?=
+
 .PHONY: all
 all: fram.bin
-
-LLVM_MOS_DIR?=
 
 %.cpp.o: %.cpp
 	$(LLVM_MOS_DIR)/bin/clang++ \
@@ -59,3 +59,12 @@ clean:
 .PHONY: disass 
 disass: fram.bin
 	$(LLVM_MOS_DIR)/bin/llvm-objdump -d fram.bin.elf --print-imm-hex --demangle
+
+
+.PHONY: symbols
+symbols: fram.bin
+	$(LLVM_MOS_DIR)/bin/llvm-nm fram.bin.elf --numeric-sort --demangle
+
+.PHONY: free_space
+free_space: fram.bin
+	@./print_free_space.sh
