@@ -10,3 +10,4 @@ __dodo_init:
 	; Init hardware stack pointer
 	ldx #$FF
 	txs
+	; TODO version check

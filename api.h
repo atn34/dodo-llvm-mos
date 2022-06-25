@@ -1,6 +1,10 @@
 #ifndef _API_H
 #define _API_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Specify version compiled against. Semantic versioning enforcement takes place
 // in CHECK_VERSION
 #define MAJOR 1
@@ -133,10 +137,10 @@ void GET_PIXEL(byte x, byte y);
 void LOAD_PERSISTENT(byte* buffer);
 void SAVE_PERSISTENT(byte* buffer);
 
-void srand(unsigned int x);
-int rand();
-char *itoa(int value, int base);
-
 #define api_init()
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif

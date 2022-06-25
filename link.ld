@@ -6,7 +6,11 @@ MEMORY {
 SECTIONS {
     .text 0x5800 : {
         . = . + 0x100;
-        INCLUDE text-sections.ld
+	_start = .;
+        /* A mechanism for dynamically building an _init script. */
+        *(SORT_BY_INIT_PRIORITY(.init.* .init))
+	*(.call_main)
+	*(.text .text.*)
     } >fram
     .rodata : {
         INCLUDE rodata-sections.ld
