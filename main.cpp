@@ -50,14 +50,14 @@ void processInput(byte buttons) {
   if (state.block_want_jump && state.block_moves_available > 0) {
     // Begin jump
     state.block_want_jump = 0;
-    state.block_velocity_y = Real(-6)/Real(4);
+    state.block_velocity_y = Real(-6) / Real(4);
     state.block_jump_frames_left = 8;
     state.block_moves_available -= 1;
   }
   if ((buttons & 16) == 0 && (state.last_buttons & 16) == 0 &&
       state.block_jump_frames_left > 0) {
     // Continue jump
-    state.block_velocity_y = Real(-6)/Real(4);
+    state.block_velocity_y = Real(-6) / Real(4);
     state.block_jump_frames_left--;
   }
   if ((buttons & 16) != 0 && (state.last_buttons & 16) == 0) {
@@ -176,8 +176,7 @@ int handlePhysics() {
       if (state.tiles[i][j] == 2) {
         return 1;
       } else if (state.tiles[i][j] == 3) {
-        DRAW_SPRITE((byte *)tile_sprites[state.tiles[i][j]], j * 8, i * 8, 8,
-                    8,
+        DRAW_SPRITE((byte *)tile_sprites[state.tiles[i][j]], j * 8, i * 8, 8, 8,
                     /*flip*/ 0, DRAW_XOR);
         if (--state.coins_remaining == 0) {
           return 2;
@@ -192,14 +191,14 @@ int handlePhysics() {
 }
 
 void drawBlock() {
-  DRAW_SPRITE((byte *)block_sprites[state.block_moves_available],
-              state.block_x, state.block_y, BLOCK_WIDTH, BLOCK_HEIGHT,
+  DRAW_SPRITE((byte *)block_sprites[state.block_moves_available], state.block_x,
+              state.block_y, BLOCK_WIDTH, BLOCK_HEIGHT,
               /*flip*/ 0, DRAW_OR);
 }
 
 void eraseBlock() {
-  DRAW_SPRITE((byte *)block_sprites[state.block_moves_available],
-              state.block_x, state.block_y, BLOCK_WIDTH, BLOCK_HEIGHT,
+  DRAW_SPRITE((byte *)block_sprites[state.block_moves_available], state.block_x,
+              state.block_y, BLOCK_WIDTH, BLOCK_HEIGHT,
               /*flip*/ 0, DRAW_XOR);
 }
 
@@ -211,8 +210,7 @@ void drawTiles() {
       if (state.tiles[i][j] == 3) {
         ++state.coins_remaining;
       }
-      DRAW_SPRITE((byte *)tile_sprites[state.tiles[i][j]], j * 8, i * 8, 8,
-                  8,
+      DRAW_SPRITE((byte *)tile_sprites[state.tiles[i][j]], j * 8, i * 8, 8, 8,
                   /*flip*/ 0, DRAW_OR);
     }
   }
@@ -369,14 +367,30 @@ BEGIN_GAME:
   }
 
   switch (level) {
-	  case 0: initLevel1(); break;
-	  case 1: initLevel2(); break;
-	  case 2: initLevel3(); break;
-	  case 3: initLevel4(); break;
-	  case 4: initLevel5(); break;
-	  case 5: initLevel6(); break;
-	  case 6: initLevel7(); break;
-	  case 7: initLevel8(); break;
+  case 0:
+    initLevel1();
+    break;
+  case 1:
+    initLevel2();
+    break;
+  case 2:
+    initLevel3();
+    break;
+  case 3:
+    initLevel4();
+    break;
+  case 4:
+    initLevel5();
+    break;
+  case 5:
+    initLevel6();
+    break;
+  case 6:
+    initLevel7();
+    break;
+  case 7:
+    initLevel8();
+    break;
   }
 
   // Clear the graphics in video memory
