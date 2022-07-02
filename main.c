@@ -1,5 +1,6 @@
 #include "api.h"
 
+#include <inttypes.h>
 #include <string.h>
 
 #define SCREEN_WIDTH_BEGIN 0
@@ -14,20 +15,20 @@
 #define TILE_COLUMNS 16
 
 struct GameState {
-  int block_x;
-  int block_y;
-  int block_velocity_x;
+  uint8_t block_x;
+  uint8_t block_y;
+  int8_t block_velocity_x;
   // Fixed point. Right shift by 2 to convert to pixels.
   int block_velocity_y;
-  int block_want_jump;
-  int block_jump_frames_left;
-  int block_moves_available;
+  uint8_t block_want_jump;
+  uint8_t block_jump_frames_left;
+  uint8_t block_moves_available;
   byte last_buttons;
   byte tiles[TILE_ROWS][TILE_COLUMNS];
-  int coins_remaining;
-  int lastblock_x;
-  int last_block_x;
-  int last_block_y;
+  uint8_t coins_remaining;
+  uint8_t lastblock_x;
+  uint8_t last_block_x;
+  uint8_t last_block_y;
 } state;
 
 static char *const tile_sprites[] = {
@@ -104,14 +105,14 @@ static void processInput(byte buttons) {
   state.last_buttons = buttons;
 }
 
-static int handlePhysics() {
-  int i;
-  int j;
-  int i_end;
-  int j_end;
-  int last_x;
-  int last_y;
-  int intersects_blocks = 0;
+static uint8_t handlePhysics() {
+  uint8_t i;
+  uint8_t j;
+  uint8_t i_end;
+  uint8_t j_end;
+  uint8_t last_x;
+  uint8_t last_y;
+  uint8_t intersects_blocks = 0;
   state.block_velocity_y += 1;
   state.block_y += state.block_velocity_y >> 2;
   state.block_x += state.block_velocity_x;
@@ -204,8 +205,8 @@ static void eraseBlock() {
 }
 
 static void drawTiles() {
-  int i;
-  int j;
+  uint8_t i;
+  uint8_t j;
   for (i = 0; i < TILE_ROWS; ++i) {
     for (j = 0; j < TILE_COLUMNS; ++j) {
       if (state.tiles[i][j] == 3) {
@@ -223,8 +224,8 @@ static void initGameState() {
 }
 
 static void initLevel1() {
-  int i;
-  int j;
+  uint8_t i;
+  uint8_t j;
   initGameState();
 
   for (i = 0; i < TILE_ROWS; ++i) {
@@ -248,7 +249,7 @@ static void initLevel1() {
 }
 
 static void initLevel2() {
-  int j;
+  uint8_t j;
   initLevel1();
 
   for (j = 0; j < 4; ++j) {
@@ -258,7 +259,7 @@ static void initLevel2() {
 }
 
 static void initLevel3() {
-  int i;
+  uint8_t i;
   initLevel1();
 
   for (i = 0; i < TILE_COLUMNS; ++i) {
@@ -267,7 +268,7 @@ static void initLevel3() {
 }
 
 static void initLevel4() {
-  int i;
+  uint8_t i;
   initLevel3();
 
   for (i = 0; i < TILE_COLUMNS; ++i) {
@@ -276,8 +277,8 @@ static void initLevel4() {
 }
 
 static void initLevel5() {
-  int i;
-  int j;
+  uint8_t i;
+  uint8_t j;
   initLevel4();
 
   for (i = 0; i < TILE_COLUMNS; ++i) {
@@ -294,7 +295,7 @@ static void initLevel5() {
 }
 
 static void initLevel6() {
-  int j;
+  uint8_t j;
   initLevel5();
 
   for (j = 0; j < TILE_ROWS; ++j) {
@@ -313,8 +314,8 @@ static void initLevel7() {
 }
 
 static void initLevel8() {
-  int i;
-  int j;
+  uint8_t i;
+  uint8_t j;
   initLevel1();
   for (i = 0; i < TILE_ROWS; ++i) {
     state.tiles[i][0] = 2;
@@ -346,15 +347,15 @@ static char *const levelMsgs[] = {
     "Level 5",   "Level 6",           "Level 7", "Level 8"};
 
 int main() {
-  int i;
-  int status;
-  int level = 0;
+  uint8_t i;
+  uint8_t status;
+  uint8_t level = 0;
 
   // Initialize the API
   api_init();
 
 BEGIN_GAME:
-  if (level >= (int)(sizeof(levels) / sizeof(levels[0]))) {
+  if (level >= (uint8_t)(sizeof(levels) / sizeof(levels[0]))) {
     CLEAR();
     SET_CURSOR(0, 0);
     DRAW_STRING("You Win!");
