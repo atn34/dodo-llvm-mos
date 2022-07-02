@@ -5,7 +5,7 @@ FLAGS ?= -flto -Oz -g -Wall -Wextra -Werror -mcpu=mos65c02
 all: fram.bin
 
 %.cpp.o: %.cpp
-	$(LLVM_MOS_DIR)/bin/clang++ \
+	@$(LLVM_MOS_DIR)/bin/clang++ \
 		$(FLAGS) \
 		$^ \
 		-c -std=c++11 -fdata-sections -ffunction-sections \
@@ -13,7 +13,7 @@ all: fram.bin
 	       	-o $@
 
 %.c.o: %.c
-	$(LLVM_MOS_DIR)/bin/clang \
+	@$(LLVM_MOS_DIR)/bin/clang \
 		$(FLAGS) \
 		$^ \
 		-c -std=c99 -fdata-sections -ffunction-sections \
@@ -21,13 +21,13 @@ all: fram.bin
 	       	-o $@
 
 %.s.o: %.s
-	$(LLVM_MOS_DIR)/bin/clang \
+	@$(LLVM_MOS_DIR)/bin/clang \
 		$(FLAGS) \
 		$^ \
 		-c -o $@
 
 fram.bin: $(patsubst %,%.o,$(wildcard *.s)) $(patsubst %,%.o,$(wildcard *.c)) $(patsubst %,%.o,$(wildcard *.cpp))
-	$(LLVM_MOS_DIR)/bin/clang++ \
+	@$(LLVM_MOS_DIR)/bin/clang++ \
 		$(FLAGS) \
 		$^ \
 		-L $(LLVM_MOS_DIR)/mos-platform/common/lib \
@@ -36,11 +36,11 @@ fram.bin: $(patsubst %,%.o,$(wildcard *.s)) $(patsubst %,%.o,$(wildcard *.c)) $(
 
 .PHONY: clean
 clean:
-	rm -f *.o fram.*
+	@rm -f *.o fram.*
 
 .PHONY: disass 
 disass: fram.bin
-	@$(LLVM_MOS_DIR)/bin/llvm-objdump --source fram.bin.elf --print-imm-hex --demangle
+	@$(LLVM_MOS_DIR)/bin/llvm-objdump -d fram.bin.elf --print-imm-hex --demangle
 
 
 .PHONY: symbols
