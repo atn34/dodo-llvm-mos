@@ -31,14 +31,14 @@ struct GameState {
   uint8_t last_block_y;
 } state;
 
-static char *const tile_sprites[] = {
+static const char *const tile_sprites[] = {
     "\x00\x00\x00\x00\x00\x00\x00\x00",
     "\xff\x00\xff\x00\xff\x00\xff\x00",
     "\x81\x42\x24\x18\x18\x24\x42\x81",
     "\x00\x3c\x42\x42\x42\x42\x3c\x00",
 };
 
-static char *const block_sprites[] = {
+static const char *const block_sprites[] = {
     "\xff\x81\x81\x81\x81\x81\x81\xff",
     "\xff\xff\xc3\xc3\xc3\xc3\xff\xff",
     "\xff\xff\xff\xe7\xe7\xff\xff\xff",
@@ -339,10 +339,9 @@ static void initLevel8() {
   state.tiles[7][8] = 1;
 }
 
-static void (*levels[])(struct GameState *) = {
-    initLevel1, initLevel2, initLevel3, initLevel4,
-    initLevel5, initLevel6, initLevel7, initLevel8};
-static char *const levelMsgs[] = {
+static void (*levels[])() = {initLevel1, initLevel2, initLevel3, initLevel4,
+                             initLevel5, initLevel6, initLevel7, initLevel8};
+static const char *const levelMsgs[] = {
     "A to jump", "B + <dir> to dash", "Level 3", "Level 4",
     "Level 5",   "Level 6",           "Level 7", "Level 8"};
 
@@ -370,7 +369,7 @@ BEGIN_GAME:
       WAIT();
     }
   }
-  levels[level](&state);
+  levels[level]();
 
   // Clear the graphics in video memory
   CLEAR();
