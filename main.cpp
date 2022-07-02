@@ -1,4 +1,5 @@
 #include "api.h"
+#include "fixed_point.h"
 
 #include <inttypes.h>
 #include <string.h>
@@ -18,8 +19,7 @@ struct GameState {
   uint8_t block_x;
   uint8_t block_y;
   int8_t block_velocity_x;
-  // Fixed point. Right shift by 2 to convert to pixels.
-  int block_velocity_y;
+  Real block_velocity_y;
   uint8_t block_want_jump;
   uint8_t block_jump_frames_left;
   uint8_t block_moves_available;
@@ -52,14 +52,14 @@ static void processInput(byte buttons) {
   if (state.block_want_jump && state.block_moves_available > 0) {
     // Begin jump
     state.block_want_jump = 0;
-    state.block_velocity_y = -6;
+    state.block_velocity_y = Real(-6) / Real(4);
     state.block_jump_frames_left = 8;
     state.block_moves_available -= 1;
   }
   if ((buttons & 16) == 0 && (state.last_buttons & 16) == 0 &&
       state.block_jump_frames_left > 0) {
     // Continue jump
-    state.block_velocity_y = -6;
+    state.block_velocity_y = Real(-6) / Real(4);
     state.block_jump_frames_left--;
   }
   if ((buttons & 16) != 0 && (state.last_buttons & 16) == 0) {
@@ -113,8 +113,8 @@ static uint8_t handlePhysics() {
   uint8_t last_x;
   uint8_t last_y;
   uint8_t intersects_blocks = 0;
-  state.block_velocity_y += 1;
-  state.block_y += state.block_velocity_y >> 2;
+  state.block_velocity_y += Real(1) / Real(4);
+  state.block_y += state.block_velocity_y.asInt();
   state.block_x += state.block_velocity_x;
 
   if (state.block_x < SCREEN_WIDTH_BEGIN) {
