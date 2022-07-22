@@ -1,3 +1,5 @@
+Dodo support is now available in llvm-mos directly, so you can just use mos-dodo-clang from the sdk.
+
 # dodo-llvm-mos
 
 1. Download [llvm-mos](https://github.com/llvm-mos/llvm-mos-sdk#download)
